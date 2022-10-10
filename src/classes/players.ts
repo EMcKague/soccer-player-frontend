@@ -1,10 +1,25 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useDoQuery } from "../api/useDoQuery"
+import { snakeCase } from "../helpers/strings"
 
-interface PlayerList {
+export interface PlayerList {
     list: Player[]
     dict: { [id: Player['id']]: Player }
   }
+
+  export type SortOptions = typeof sortOptions[number]
+  export const sortOptions = [
+    'asc', 'desc'] as const
+    
+export interface SortParams {
+    sort: SortOptions
+    column: keyof Player
+}
+
+export type NumberTypes = typeof numberTypes[number]
+export const numberTypes = [
+'goals', 'assists', 'age', 'heightNum'] as const
+export const numberTypesSelection = numberTypes.map((type) => { return {value: type, label: type}} )
 
 export class Player {
     id: number
@@ -14,9 +29,18 @@ export class Player {
     club: string
     height: string
     prefferedFoot: string
+    goals: number
+    assists: number
+    age: number
 
-    static loadAll (): { data: PlayerList, isLoading: boolean } {
-        return useDoQuery({ path: 'http://localhost:5000/players', objectClass: Player })
+    get heightNum (): number {return parseInt(this.height.replace(' cm', ''))}
+
+    static loadAll (sortParams?: SortParams): { data: PlayerList, isLoading: boolean } {
+        let path = 'http://localhost:5000/players'
+        if (sortParams?.sort && sortParams?.column) {
+            path = path.concat(`?sort=${sortParams.sort}&column=${snakeCase(sortParams.column)}`)
+        }
+        return useDoQuery({ path: path, objectClass: Player })
     }
 
 
@@ -28,5 +52,8 @@ export class Player {
         this.club = row.club
         this.height = row.height.toString() + ' cm'
         this.prefferedFoot = row.preffered_foot
+        this.goals = row.goals
+        this.assists = row.assists
+        this.age = row.age
     }
 }

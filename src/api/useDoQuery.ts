@@ -27,7 +27,6 @@ export const useDoQuery = (parameters: queryProps): queryResult => {
   
     const queryFunction = (): Promise<any> => doGet({ path })
       .then((response: any) => { 
-        console.log({response})
         return handleResponse(response, objectClass)
         }
       )

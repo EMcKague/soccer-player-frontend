@@ -20,7 +20,6 @@ const eventMethods = ['GET']
 
 function handleFetchResponse (path: string, promise: Promise<any>, method: string = 'GET'): Promise<any> {
     return promise.then((response) => {
-        console.log({response})
       if (response.status >= 200 && response.status < 300) {
         if (eventMethods.indexOf(method) > -1) {
           let eventURL = path
