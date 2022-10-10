@@ -17,7 +17,7 @@ export default function CardList() {
       <Card
         style={style}
         key={index}
-        onClick={() => {console.log({classObj}); setSelectedPlayer(classObj)}}
+        onClick={() => setSelectedPlayer(classObj)}
       >
         {columns.selected.map((column, index) =>
         <Tooltip 

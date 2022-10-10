@@ -11,14 +11,6 @@ const [anchorEl, setAnchorEl] = useState(null)
 const {data: playerData} = useContext(MainPgCtx)
 const divStyle = {cursor: 'pointer', padding: 5}
 
-// const handlePlayerFetch = (name: string) => {
-//     fetch(`http://localhost:5000/players/${name}`)
-//         .then(resp => 
-//             resp.json().then((body) =>
-//                 setData(JSON.stringify(body))
-//             ))
-// }
-
 const handleFetch = (path: string) => {
     const url = 'http://localhost:5000' + path
     fetch(url).then(resp => 
@@ -29,7 +21,7 @@ const handleFetch = (path: string) => {
 return (
     <div>
         <div>
-            <Button onClick={(e: any) => {console.log({e}); setAnchorEl(e.target)}}>Player by Name</Button>
+            <Button onClick={(e: any) => {setAnchorEl(e.target)}}>Player by Name</Button>
             <Button onClick={() => setData(JSON.stringify(playerData, null, 4))}>Players</Button>
             <Button onClick={() => handleFetch('/countries')}>Countries</Button>
             <Button onClick={() => handleFetch('/clubs')}>Clubs</Button>
